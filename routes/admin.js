@@ -54,6 +54,17 @@ router.post("/categorias/nova",(req, res) => {
         })
     }})
 
+    router.post("/categorias/delete", (req,res) => {
+        Categoria.deleteOne({_id: req.body.id}).then(() => {
+            req.flash("success_msg", "Categoria deletada com sucesso!")
+            res.redirect('/admin/categorias')
+        }).catch((err) => {
+            console.log("Ocorreu um erro ao deletar a categoria. "+err)
+            req.flash("error_msg", "Houve um erro ao deletar a categoria.")
+            res.redirect("/admin/categorias")
+        })
+    })
+
     router.post('/categorias/edit', (req,res)=>{
 
         var erros = []
