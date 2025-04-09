@@ -28,11 +28,11 @@ router.post("/categorias/nova",(req, res) => {
 
     var erros = []
 
-    if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
+    if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null || req.body.nome.trim().length < 3) {
         erros.push({texto: "Nome Inválido!"})
     }
 
-    if (!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+    if (!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null || req.body.slug.trim().length < 3){
         erros.push({texto: "Slug Inválido!"})
     }
 
@@ -69,11 +69,11 @@ router.post("/categorias/nova",(req, res) => {
 
         var erros = []
 
-    if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
+    if (!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null || req.body.nome.trim().length > 3) {
         erros.push({texto: "Nome Inválido!"})
     }
 
-    if (!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+    if (!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null || req.body.slug.trim().length > 3){
         erros.push({texto: "Slug Inválido!"})
     }
 
