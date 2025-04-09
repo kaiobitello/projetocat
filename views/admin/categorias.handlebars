@@ -1,20 +1,40 @@
+<style>
+    .mais:hover {
+        transform: scale(1.1);
+    }
+        
+</style>
+
 <h2>Lista de Categorias</h2>
 <hr>
-<a href="/admin/categorias/add"><button class="btn btn-success">Nova Categoria</button></a>
+<a href="/admin/categorias/add" class="btn btn-success position-fixed mais" 
+   style="bottom: 20px; right: 20px; z-index: 999;transition: transform 0.3s ease; background-color:black">
+  <i class="bi bi-plus-lg"></i>
+</a>
 
 {{#each categorias}}
 
-<div class="card mt-4" style=>
-    <div class="card-body">
-        <h4>{{nome}}</h4>
-        <small>Slug: {{slug}}</small><br>
-            <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-4">Editar</button></a>
-            <form action="/admin/categorias/delete" method="post">
-                <input type="hidden" name="id" value="{{_id}}">
-                <button type="submit" class="btn btn-danger mt-2">Deletar</button>
-            </form>
-    </div>
+<div class="card mt-4" style="box-shadow: 0 5px 6px rgba(0, 0, 0, 0.637);">
+  <div class="card-body position-relative">
+    <h4>{{nome}}</h4>
+    <small>Slug: {{slug}}</small><br>
+
+    <a href="/admin/categorias/edit/{{_id}}">
+      <button class="btn btn-success mt-4">
+        <i class="bi bi-pencil-square"></i> Editar
+      </button>
+    </a>
+
+    <form action="/admin/categorias/delete" method="post" class="d-inline">
+      <input type="hidden" name="id" value="{{_id}}">
+      <button type="submit" class="btn btn-danger position-absolute bottom-0 end-0 m-2">
+        <i class="bi bi-trash"></i> Deletar
+      </button>
+    </form>
+
+  </div>
 </div>
+
 
 {{else}}
     <h4 class="mt-3">Nenhuma categoria registrada! Registre uma.</h4>
