@@ -1,0 +1,19 @@
+<h2>Lista de Postagens</h2>
+<hr>
+{{#each postagens}}
+
+<div class="card mt-4" style="box-shadow: 0 5px 6px rgba(0, 0, 0, 0.637);">
+  <div class="card-body">
+    <h4>{{titulo}}</h4>
+    <small>Slug: {{slug}}</small><br>
+    <small>Descrição: {{descricao}}</small> <br>
+    <small>Conteúdo: {{conteudo}}</small> <br>
+    <small>Categoria: {{categoria.nome}}</small> <br>
+  </div>
+</div>
+{{/each}}
+
+<a href="/admin/postagens/add" class="btn btn-primary position-fixed" 
+   style="bottom: 20px; right: 20px; z-index: 999;transition: transform 0.3s ease">
+  <i class="bi bi-plus-lg"></i>
+</a>
