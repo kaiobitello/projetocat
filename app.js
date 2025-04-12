@@ -15,7 +15,7 @@ const __dirname = dirname(__filename);
 const app = express()
 const Postagens = mongoose.model("postagens")
 const Categoria = mongoose.model("categorias")
-const MongoStore = require('connect-mongo');
+import mongoStore from 'connect-mongo'
 require('dotenv').config();
 
 
@@ -27,7 +27,7 @@ app.use(session({
     secret: 'eudouocupramendigo', // Substitua por um segredo seguro
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
+    store: mongoStore.create({
         mongoUrl: process.env.MONGO_URI, // URL do MongoDB
         ttl: 14 * 24 * 60 * 60 // Tempo de vida da sessão (14 dias)
     })
