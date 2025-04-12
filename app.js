@@ -15,6 +15,8 @@ const __dirname = dirname(__filename);
 const app = express()
 const Postagens = mongoose.model("postagens")
 const Categoria = mongoose.model("categorias")
+const MongoStore = require('connect-mongo');
+require('dotenv').config();
 
 
 //Config;
@@ -22,10 +24,14 @@ const Categoria = mongoose.model("categorias")
 //Sessão
 
 app.use(session({
-    secret: "cursodenode",
-    resave: true,
-    saveUninitialized: true
-}))
+    secret: 'eudouocupramendigo', // Substitua por um segredo seguro
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI, // URL do MongoDB
+        ttl: 14 * 24 * 60 * 60 // Tempo de vida da sessão (14 dias)
+    })
+}));
 app.use(flash())
 
 //Middleware
