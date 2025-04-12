@@ -1,7 +1,19 @@
 <style>
-    .mais:hover {
-        transform: scale(1.1);
-    }
+
+.mais:hover {
+  transform: scale(1.20)
+}
+
+.categorias {
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+}
+.categorias:hover {
+  transform: scale(1.02);
+}
+
         
 </style>
 
@@ -14,7 +26,7 @@
 
 {{#each categorias}}
 
-<div class="card mt-4" style="box-shadow: 0 5px 6px rgba(0, 0, 0, 0.637);">
+<div class="card mt-4 categorias" style="box-shadow: 0 5px 6px rgba(7, 7, 7, 0.089);">
   <div class="card-body position-relative">
     <h4>{{nome}}</h4>
     <small>Slug: {{slug}}</small><br>

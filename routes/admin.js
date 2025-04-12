@@ -3,13 +3,25 @@ const router = express.Router()
 import mongoose from 'mongoose'
 import '../models/Categoria.js'
 import '../models/Postagem.js'
+import multer from 'multer'
+import path from 'path'
 const Categoria = mongoose.model("categorias")
 const Postagem = mongoose.model("postagens")
 
-
-router.get('/',(req,res) => {
-    res.render('admin/index.handlebars')
+//Multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname)
+        const filename = Date.now() + ext
+        cb(null, filename)
+    }
 })
+
+const upload = multer({ storage: storage })
+
 
 router.get('/posts', (req,res) => {
     res.send('Página de posts')
@@ -56,6 +68,7 @@ router.post("/categorias/nova",(req, res) => {
             res.redirect("/admin/categorias")
         })
     }})
+
 
     router.post("/categorias/delete", (req,res) => {
         Categoria.deleteOne({_id: req.body.id}).then(() => {
@@ -133,7 +146,9 @@ router.post("/categorias/nova",(req, res) => {
     })
 
 
-    router.post("/postagens/nova", (req, res) => {
+    router.post("/postagens/nova", upload.single('imagem'), (req, res) => {
+
+        console.log(req.file)
 
         var erros = []
 
@@ -149,7 +164,7 @@ router.post("/categorias/nova",(req, res) => {
             erros.push({texto: "Descrição Inválida!"})
         }
     
-        if (!req.body.conteudo || typeof req.body.conteudo == undefined || req.body.conteudo == null || req.body.conteudo.trim().length > 20){
+        if (!req.body.conteudo || typeof req.body.conteudo == undefined || req.body.conteudo == null || req.body.conteudo.trim().length < 10){
             erros.push({texto: "Conteúdo Inválido!"})
         }
 
@@ -166,6 +181,7 @@ router.post("/categorias/nova",(req, res) => {
                 descricao: req.body.descricao,
                 conteudo: req.body.conteudo,
                 categoria: req.body.categoria,
+                imagem: '/uploads/' + req.file.filename
             }
 
             new Postagem(novaPostagem).save().then(() => {
@@ -179,7 +195,61 @@ router.post("/categorias/nova",(req, res) => {
 
         }
 
+        router.post("/postagens/delete", (req, res) => {
+            Postagem.deleteOne({ _id: req.body.id }) 
+                .then(() => {
+                    req.flash("success_msg", "Postagem deletada com sucesso!")
+                    res.redirect("/admin/postagens")
+                })
+                .catch((err) => {
+                    console.log("Erro ao deletar: " + err)
+                    req.flash("error_msg", "Erro ao tentar deletar a postagem.")
+                    res.redirect("/admin/postagens")
+                })
+        })
+    
+
+        router.get("/postagens/edit/:id", (req, res) => {
+            Postagem.findOne({ _id: req.params.id }).lean().then((postagem) => {
+                Categoria.find().lean().then((categorias) => {
+                    res.render("admin/editpost", {
+                        postagem: postagem,
+                        categorias: categorias
+                    })
+                }).catch((err) => {
+                    req.flash("error_msg", "Erro ao listar categorias.")
+                    res.redirect("/admin/postagens")
+                })
+            }).catch((err) => {
+                req.flash("error_msg", "Erro ao carregar o formulário de edição.")
+                res.redirect("/admin/postagens")
+            })
+        })
+
+
+        router.post("/postagens/edit/:id", (req, res) => {
+            Postagem.findOne({ _id: req.params.id }).then((postagem) => {
         
+                postagem.titulo = req.body.titulo
+                postagem.slug = req.body.slug
+                postagem.descricao = req.body.descricao
+                postagem.conteudo = req.body.conteudo
+                postagem.categoria = req.body.categoria
+        
+                postagem.save().then(() => {
+                    req.flash("success_msg", "Postagem editada com sucesso!")
+                    res.redirect("/admin/postagens")
+                }).catch((err) => {
+                    console.log("Erro ao salvar postagem: " + err)
+                    req.flash("error_msg", "Erro ao salvar edição.")
+                    res.redirect("/admin/postagens")
+                })
+        
+            }).catch((err) => {
+                req.flash("error_msg", "Postagem não encontrada.")
+                res.redirect("/admin/postagens")
+            })
+        })
 
     })
 

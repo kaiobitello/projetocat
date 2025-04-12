@@ -1,19 +1,47 @@
+<style>
+  .mais:hover {
+  transform: scale(1.20)
+}
+
+.postagens {
+  border-radius: 16px;
+  padding: 7px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+.postagens:hover {
+  transform: scale(1.02);
+}
+</style>
+
 <h2>Lista de Postagens</h2>
 <hr>
 {{#each postagens}}
 
-<div class="card mt-4" style="box-shadow: 0 5px 6px rgba(0, 0, 0, 0.637);">
-  <div class="card-body">
+<div class="card mt-4 postagens" style="box-shadow: 0 5px 6px rgba(0, 0, 0, 0.637);">
+  <div class="card-body position-relative">
     <h4>{{titulo}}</h4>
     <small>Slug: {{slug}}</small><br>
     <small>Descrição: {{descricao}}</small> <br>
     <small>Conteúdo: {{conteudo}}</small> <br>
     <small>Categoria: {{categoria.nome}}</small> <br>
+
+<form action="/admin/postagens/delete" method="POST" class="d-inline">
+  <input type="hidden" name="id" value="{{_id}}">
+  <button type="submit" class="btn btn-danger position-absolute bottom-0 end-0 m-2">
+    <i class="bi bi-trash"></i> Deletar
+  </button>
+</form>
+
+<a href="/admin/postagens/edit/{{_id}}"><button class="btn btn-success mt-3 position-relative ">Editar</button></a>
   </div>
 </div>
+
+{{else}}
+  <h4>Nenhuma postagem ainda.</h4>
 {{/each}}
 
-<a href="/admin/postagens/add" class="btn btn-primary position-fixed" 
-   style="bottom: 20px; right: 20px; z-index: 999;transition: transform 0.3s ease">
+<a href="/admin/postagens/add" class="btn btn-primary position-fixed mais" 
+   style="bottom: 20px; right: 20px; z-index: 991;transition: transform 0.3s ease">
   <i class="bi bi-plus-lg"></i>
 </a>

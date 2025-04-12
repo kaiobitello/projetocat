@@ -1,0 +1,27 @@
+
+
+<div class="bg-white p-5 rounded-lg m-3">
+  <h1 class="display-4">Bem-vindo ao KaioDev!</h1>
+  <p class="lead">Isso é apenas um projeto que estou fazendo no curso de Node JS do Victor lima, se sinta a vontade!</p>
+  <a class="btn btn-primary btn-lg" href="#" role="button">Se registre</a>
+</div>
+<hr>
+<h2>Postagens recentes</h2>
+
+{{#each postagens}}
+<div class="card mt-3">
+    <div class="card-body">
+        <h3>{{titulo}}</h3>
+        <p>{{descricao}}</p>
+        <img src="{{imagem}}" alt="{{titulo}}" height="200px" width=""> <br> <br>
+        <a href="/postagens/{{slug}}"><button class="btn btn-secondary">Leia Mais</button></a>
+        <hr>
+        <small>Categoria: {{categoria.nome}}</small> <br>
+        <small>Data de publicação: {{data}}</small>
+    </div>
+</div>
+
+{{else}}
+<h4>Nenhuma postagem feita! Crie uma</h4>
+
+{{/each}}
