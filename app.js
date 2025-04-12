@@ -16,7 +16,7 @@ const app = express()
 const Postagens = mongoose.model("postagens")
 const Categoria = mongoose.model("categorias")
 import mongoStore from 'connect-mongo'
-require('dotenv').config();
+import 'dotenv/config';
 
 
 //Config;
