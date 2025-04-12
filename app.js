@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import admin from './routes/admin.js'
+import usuarios from './routes/usuario.js'
 import './models/Postagem.js'
 import path from 'path'
 import session from 'express-session';
@@ -137,6 +138,7 @@ app.get("/404", (req, res) => {
 })
 
 app.use('/admin', admin)
+app.use("/usuarios", usuarios)
 
 //Resto;
 const PORT = process.env.PORT || 3000
