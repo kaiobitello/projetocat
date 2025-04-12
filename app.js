@@ -9,10 +9,13 @@ import path from 'path'
 import session from 'express-session';
 import flash from 'connect-flash'
 import multer from 'multer'
+import './models/Categoria.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express()
 const Postagens = mongoose.model("postagens")
+const Categoria = mongoose.model("categorias")
+
 
 //Config;
 
@@ -52,12 +55,14 @@ app.set('views', path.join(__dirname, 'views'));
 
 //Mongoose
 
-mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/blogapp").then(function(){
-    console.log("Conectado com sucesso!")
-}).catch(function(erro){
-    console.log(`Erro! ${erro}`)
-})
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log('Conectado ao MongoDB Atlas');
+}).catch((err) => {
+    console.log('Erro ao conectar ao MongoDB:', err);
+});
 
 //public
 
@@ -76,6 +81,15 @@ app.get("/", (req, res) => {
 
 })
 
+app.get("/categorias", (req, res) => {
+    Categoria.find().then((categorias) => {
+        res.render("categorias/index", {categorias: categorias})
+    }).catch((err) => {
+        req.flash("error_msg", "Ocorreu um erro ao carregar as categorias.")
+        res.redirect("/")
+    })
+})
+
 app.get("/postagens/:slug", (req, res) => {
     Postagens.findOne({slug: req.params.slug}).then((postagem) => {
         if(postagem) {
@@ -91,6 +105,26 @@ app.get("/postagens/:slug", (req, res) => {
     })
 })
 
+app.get("/categorias/:slug", (req, res) => {
+    Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+
+        if(categoria) {
+            Postagens.find({categoria: categoria._id}).then((postagens) => {
+                res.render("categorias/postagens", {postagens: postagens, categoria: categoria})
+            }).catch((err) => {
+                req.flash("error_msg", "Houve um erro ao listar as postagens.")
+                res.redirect("/")
+            })
+        } else {
+            req.flash("error_msg", "Essa categoria não existe.")
+            res.redirect("/")
+        }
+
+    }).catch((err) => {
+        req.flash("error_msg", "Essa categoria não existe.")
+        res.redirect("/")
+    })
+})
 app.get("/404", (req, res) => {
     res.send("ERRO 404!")
 })

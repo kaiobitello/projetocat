@@ -1,0 +1,32 @@
+<style>
+    .postagem {
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 7px;
+        transition: transform 0.3s ease-in-out;
+        margin: 10px;
+        width: calc(33.333% - 30px);
+        max-width: 430px;
+        max-height: 370px;
+    }
+
+    .postagem:hover {
+        transform: scale(1.05);
+    }
+
+
+</style>
+
+<h1>#{{categoria.nome}}</h1>
+<hr>
+{{#each postagens}}
+<div class="card mt-3 postagem" onclick="location.href='/postagens/{{slug}}'">
+    <img src="{{imagem}}" alt="{{titulo}}" style="width: 100%; height: 230px;" class="card-img-top fundo">
+    <div class="card-body">
+        <h4>{{titulo}}</h4>
+        <p>{{descricao}}</p>
+    </div>
+</div>
+{{else}}
+<h4>Nenhuma postagem feita nesta categoria!</h4>
+{{/each}}
