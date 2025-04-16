@@ -10,6 +10,10 @@ import path from 'path'
 import session from 'express-session';
 import flash from 'connect-flash'
 import multer from 'multer'
+import bcrypt from 'bcryptjs';
+import passport from 'passport';
+import auth from './config/auth.js'
+auth(passport)
 import './models/Categoria.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,6 +22,7 @@ const Postagens = mongoose.model("postagens")
 const Categoria = mongoose.model("categorias")
 import mongoStore from 'connect-mongo'
 import 'dotenv/config';
+
 
 
 //Config;
@@ -33,6 +38,12 @@ app.use(session({
         ttl: 14 * 24 * 60 * 60 // Tempo de vida da sessão (14 dias)
     })
 }));
+
+//Passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+//Flash
 app.use(flash())
 
 //Middleware
@@ -40,6 +51,8 @@ app.use(flash())
 app.use((req,res,next) => {
     res.locals.success_msg = req.flash("success_msg")
     res.locals.error_msg = req.flash("error_msg")
+    res.locals.error = req.flash("error")
+    res.locals.user = req.user
     next()
 })
 

@@ -1,3 +1,82 @@
+<style>
+    .postagem {
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 7px;
+        transition: transform 0.3s ease-in-out;
+        margin: 10px;
+        width: calc(33.333% - 30px);
+        max-width: 430px;
+        max-height: 370px;
+    }
+
+    .postagem:hover {
+        transform: scale(1.05);
+    }
+
+  @media (max-width: 768px) {
+    .postagem {
+      width: calc(50% - 30px);
+    }
+  }
+  @media (max-width: 576px) {
+    .postagem {
+      width: calc(100% - 30px);
+    }
+  }
+ .card-body {
+  width: 100%;
+  max-width: 300px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+}
+
+.card-body img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.card-body {
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+.card-body h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.card-body p {
+  color: #333;
+  font-size: 0.95rem;
+}
+}
+</style>
+
+<div class="bg-white p-5 rounded-lg m-3">
+  <h1 class="display-4">Bem-vindo ao KaioDev!</h1>
+  <p class="lead">Isso é apenas um projeto que estou fazendo no curso de Node JS do Victor lima, se sinta a vontade!</p>
+  <a class="btn btn-primary btn-lg" href="#" role="button">Se registre</a>
+</div>
+<h2>Postagens recentes</h2>
+<hr>
+{{#each postagens}}
+<div class="card mt-3 postagem" onclick="location.href='/postagens/{{slug}}'">
+    <img src="{{imagem}}" alt="{{titulo}}" style="width: 100%; height: auto;">
+    <div class="card-body">
+        <h4>{{titulo}}</h4>
+        <p>{{descricao}}</p>
+    </div>
+</div>
+{{else}}
+<h4>Nenhuma postagem feita nesta categoria!</h4>
+{{/each}}
+
 <div class="card">
     <div class="card-body">
     <h1>{{postagem.titulo}}</h1>
